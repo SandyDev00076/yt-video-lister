@@ -2,6 +2,8 @@ module.exports = function($scope) {
     $scope.videoList = [];
     $scope.folderList = [];
     $scope.currentFolder = '';
+    $scope.videoUrl = '';
+    $scope.folderName = '';
 
     $scope.addAFolder = (name) => {
         if (name) {

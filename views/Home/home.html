@@ -13,20 +13,32 @@
         </div>
     </div>
     <div ng-if="videoList.length !== 0 || folderList.length !== 0" class="videos">
-        <div class="folder" ng-repeat="folder in folderList"></div>
-        <div class="video" ng-repeat="vid in videoList"></div>
+        <div class="folder" ng-repeat="folder in folderList" ng-if="folder.parent === currentFolder">
+            <div>
+                <i class="material-icons" style="font-size: 3em">folder</i>
+                <br>
+                {{ folder.name }}
+            </div>
+        </div>
+        <div class="video" ng-repeat="vid in videoList" ng-if="vid.owner === currentFolder">
+            <div>
+                <i class="material-icons" style="font-size: 3em">camera_roll</i>
+                <br>
+                {{ vid.link }}
+            </div>
+        </div>
     </div>
     <div class="addvideo">
         <div class="input-group mb-3">
-                <input type="text" placeholder="Enter Video URL" class="form-control" aria-describedby="basic-addon2">
+                <input type="text" placeholder="Enter Video URL" class="form-control" ng-model="videoUrl" aria-describedby="basic-addon2">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add a video</button>
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" ng-click="addAVideo(videoUrl)">Add a video</button>
             </div>
         </div>
         <div class="input-group mb-3">
-            <input type="text" placeholder="Enter Folder Name" class="form-control" aria-describedby="basic-addon2">
+            <input type="text" placeholder="Enter Folder Name" class="form-control" ng-model="folderName" aria-describedby="basic-addon2">
             <div class="input-group-append">
-                <button class="btn btn-outline-info" type="button" id="button-addon2">Add a folder</button>
+                <button class="btn btn-outline-info" type="button" id="button-addon2" ng-click="addAFolder(folderName)">Add a folder</button>
             </div>
         </div>
     </div>

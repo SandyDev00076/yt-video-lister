@@ -37737,6 +37737,28 @@ module.exports = angular;
 },{"./angular":4}],6:[function(require,module,exports){
 module.exports = function($scope) {
     $scope.videoList = [];
+    $scope.folderList = [];
+    $scope.currentFolder = '';
+    $scope.videoUrl = '';
+    $scope.folderName = '';
+
+    $scope.addAFolder = (name) => {
+        if (name) {
+            $scope.folderList.push({
+                name,
+                parent: $scope.currentFolder
+            });
+        }
+    }
+
+    $scope.addAVideo = (link) => {
+        if (link) {
+            $scope.videoList.push({
+                link,
+                owner: $scope.currentFolder
+            });
+        }
+    }
 }
 },{}],7:[function(require,module,exports){
 module.exports = function($scope) {
