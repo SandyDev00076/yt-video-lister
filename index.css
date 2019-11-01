@@ -1,0 +1,6 @@
+@import url(./views/Home/home.css);
+@import url(./views/Video/video.css);
+
+body {
+    font-family: 'Titillium Web', sans-serif;
+}

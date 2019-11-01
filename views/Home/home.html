@@ -1,0 +1,33 @@
+<div class="homecontainer">
+    <span class="protitle">
+        VID-LOCKER
+        <br>
+        <span class="subtitle">All your favorite youtube videos in one directory</span>
+    </span>
+
+    <div ng-if="videoList.length === 0 && folderList.length === 0" class="novideos">
+        <div>
+            <i class="material-icons" style="font-size: 3em;">face</i>
+            <h1>Oops</h1>
+            <span>You currently dont have any folders or videos set.</span>
+        </div>
+    </div>
+    <div ng-if="videoList.length !== 0 || folderList.length !== 0" class="videos">
+        <div class="folder" ng-repeat="folder in folderList"></div>
+        <div class="video" ng-repeat="vid in videoList"></div>
+    </div>
+    <div class="addvideo">
+        <div class="input-group mb-3">
+                <input type="text" placeholder="Enter Video URL" class="form-control" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add a video</button>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" placeholder="Enter Folder Name" class="form-control" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" id="button-addon2">Add a folder</button>
+            </div>
+        </div>
+    </div>
+</div>

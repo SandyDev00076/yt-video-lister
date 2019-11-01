@@ -1,0 +1,20 @@
+{
+  "name": "yt-video-lister",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "browserify -t browserify-css index.js > bundle.js",
+    "start": "budo index.js --open -- -t browserify-css"
+  },
+  "author": "Sanjeet Tiwari",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.7.8",
+    "angular-route": "^1.7.8"
+  },
+  "devDependencies": {
+    "browserify-css": "^0.15.0"
+  }
+}

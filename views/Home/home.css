@@ -1,0 +1,46 @@
+.homecontainer {
+    text-align: center;
+}
+
+.protitle {
+    font-size: 2.5em;
+    padding: 20px;
+    font-weight: bold;
+    letter-spacing: 8px;
+    cursor: default;
+    color: #333;
+
+    transition: letter-spacing 0.5s;
+}
+
+.subtitle {
+    font-size: 0.4em;
+}
+
+.protitle:hover {
+    letter-spacing: 10px;
+}
+
+.novideos {
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addvideo {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.videos {
+    display: grid;
+    grid-template-columns: repeat(1fr, 4);
+    gap: 10px;
+}
+
+.folder, .video {
+    box-shadow: 0 0 4px grey;
+    width: 100px;
+    height: 100px;
+}
