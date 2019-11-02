@@ -9,12 +9,13 @@
     letter-spacing: 8px;
     cursor: default;
     color: #333;
+    margin-bottom: 1em;
 
     transition: letter-spacing 0.5s;
 }
 
 .subtitle {
-    font-size: 0.4em;
+    font-size: 0.3em;
 }
 
 .protitle:hover {
@@ -34,23 +35,32 @@
 }
 
 .videos {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(186px, 1fr));
-    gap: 10px;
-    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
     margin: 2em;
+    height: 50vh;
+    overflow-y: auto;
 }
 
 .folder, .video {
-    border: 1px solid grey;
+    box-shadow: 0 0 2px grey;
     border-radius: 10px;
-    width: 100px;
-    height: 100px;
+    width: 300px;
+    height: max-content;
     justify-self: center;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
+    margin: 1em;
     cursor: pointer;
+    text-align: center;
+    padding: 1em;
+}
+
+.folder:hover, .video:hover {
+    box-shadow: 0 0 5px grey;
+}
+
+.currpath {
+    padding: 10px;
+    color: grey;
+    font-size: 1.2em;
+    float: inline-end;
 }

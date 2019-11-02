@@ -1,7 +1,6 @@
 <div class="homecontainer">
     <span class="protitle">
         VID-LOCKER
-        <br>
         <span class="subtitle">All your favorite youtube videos in one directory</span>
     </span>
 
@@ -12,20 +11,19 @@
             <span>You currently dont have any folders or videos set.</span>
         </div>
     </div>
+    <div ng-if="videoList.length !== 0 || folderList.length !== 0" class="currpath">
+        <span>{{currPath}}</span>
+    </div>
     <div ng-if="videoList.length !== 0 || folderList.length !== 0" class="videos">
-        <div class="folder" ng-repeat="folder in folderList" ng-if="folder.parent === currentFolder">
-            <div>
-                <i class="material-icons" style="font-size: 3em">folder</i>
-                <br>
-                {{ folder.name }}
-            </div>
+        <div class="folder" ng-repeat="folder in folderList" ng-if="folder.parent === currentFolder" ng-click="openAFolder(folder.name)">
+            <i class="material-icons" style="font-size: 3em; height: 60%;">folder</i>
+            <hr>
+            {{ folder.name }}
         </div>
         <div class="video" ng-repeat="vid in videoList" ng-if="vid.owner === currentFolder">
-            <div>
-                <i class="material-icons" style="font-size: 3em">camera_roll</i>
-                <br>
-                {{ vid.name }}
-            </div>
+            <i class="material-icons" style="font-size: 3em; height: 60%;">camera_roll</i>
+            <hr>
+            {{ vid.name }}
         </div>
     </div>
     <div class="addvideo">

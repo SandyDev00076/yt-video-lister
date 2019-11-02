@@ -37742,6 +37742,7 @@ module.exports = function($scope) {
     $scope.videoUrl = '';
     $scope.videoName = '';
     $scope.folderName = '';
+    $scope.currPath = 'Choose a Folder';
 
     $scope.addAFolder = (name) => {
         if (name) {
@@ -37763,6 +37764,11 @@ module.exports = function($scope) {
                 owner: $scope.currentFolder
             });
         }
+    }
+
+    $scope.openAFolder = (name) => {
+        $scope.currPath = ($scope.currentFolder === '') ? name : `${$scope.currPath} / ${name}`;
+        $scope.currentFolder = name;
     }
 }
 },{}],7:[function(require,module,exports){
