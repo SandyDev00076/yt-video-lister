@@ -11,7 +11,7 @@ module.exports = function($scope) {
     $scope.currPath = 'Choose a Folder';
 
     $scope.addAFolder = (name) => {
-        if (name) {
+        if (name && checkFolderName(name)) {
             $scope.folderName = '';
             $scope.folderList.push({
                 name,
@@ -21,7 +21,7 @@ module.exports = function($scope) {
     }
 
     $scope.addAVideo = (link, name) => {
-        if (link && name) {
+        if (link && name && checkVideoName(name)) {
             if (checkAndAddThumbnail(link)) {
                 $scope.videoUrl = '';
                 $scope.videoName = '';
@@ -66,5 +66,13 @@ module.exports = function($scope) {
             console.log(err);
             return false;
         }
+    }
+
+    checkFolderName = (name) => {
+        return $scope.folderList.findIndex(folder => folder.name === name) < 0;
+    }
+
+    checkVideoName = (name) => {
+        return $scope.videoList.findIndex(video => video.name === name) < 0;
     }
 }
