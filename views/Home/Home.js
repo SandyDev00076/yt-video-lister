@@ -56,6 +56,14 @@ module.exports = function($scope) {
         }
     }
 
+    $scope.deleteFolder = (name) => {
+        $scope.folderList.splice($scope.folderList.findIndex(folder => folder.name === name), 1);
+    }
+
+    $scope.deleteVideo = (name) => {
+        $scope.videoList.splice($scope.videoList.findIndex(vid => vid.name === name), 1);
+    }
+
     checkAndAddThumbnail = (link) => {
         let thumbnailUrl = '';
         try {

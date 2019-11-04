@@ -20,11 +20,17 @@
             <i class="material-icons" style="font-size: 3em; height: 60%;">folder</i>
             <hr>
             {{ folder.name }}
+            <div class="taskpanel" ng-click="deleteFolder(folder.name)">
+                <i class="material-icons">delete</i>
+            </div>
         </div>
         <div class="video" ng-repeat="vid in videoList" ng-if="vid.owner === currentFolder" ng-click="goToVideo(vid.link)">
             <img src="{{ vid.thumbnail }}" style="height: 60%;"></img>
             <hr>
             {{ vid.name }}
+            <div class="taskpanel" ng-click="deleteVideo(vid.name)">
+                <i class="material-icons">delete</i>
+            </div>
         </div>
     </div>
     <div class="addvideo">
