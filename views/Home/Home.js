@@ -36,6 +36,10 @@ module.exports = function($scope) {
         }
     }
 
+    $scope.goToVideo = (link) => {
+        window.open(link,'_blank');
+    }
+
     $scope.openAFolder = (name) => {
         $scope.currPath = ($scope.currentFolder === '') ? name : `${$scope.currPath} / ${name}`;
         $scope.currentFolder = name;

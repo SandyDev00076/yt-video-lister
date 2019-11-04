@@ -21,7 +21,7 @@
             <hr>
             {{ folder.name }}
         </div>
-        <div class="video" ng-repeat="vid in videoList" ng-if="vid.owner === currentFolder">
+        <div class="video" ng-repeat="vid in videoList" ng-if="vid.owner === currentFolder" ng-click="goToVideo(vid.link)">
             <img src="{{ vid.thumbnail }}" style="height: 60%;"></img>
             <hr>
             {{ vid.name }}
