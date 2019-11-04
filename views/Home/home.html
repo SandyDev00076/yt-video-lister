@@ -28,18 +28,22 @@
         </div>
     </div>
     <div class="addvideo">
-        <div class="input-group mb-3">
-            <input type="text" placeholder="Video URL" aria-label="Video URL" ng-model="videoUrl" class="form-control">
-            <input type="text" placeholder="What's it for?" aria-label="What's it for?" ng-model="videoName" class="form-control" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-outline-info" type="button" id="button-addon2" ng-click="addAVideo(videoUrl, videoName)">Add a Video</button>
+        <form>
+            <div class="input-group mb-3">
+                <input type="text" placeholder="Video URL" aria-label="Video URL" ng-model="videoUrl" class="form-control">
+                <input type="text" placeholder="What's it for?" aria-label="What's it for?" ng-model="videoName" class="form-control" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-info" type="submit" id="button-addon2" ng-click="addAVideo(videoUrl, videoName)">Add a Video</button>
+                </div>
             </div>
-        </div>
-        <div class="input-group">
-                <input type="text" placeholder="Enter Folder Name" class="form-control" ng-model="folderName" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2" ng-click="addAFolder(folderName)">Add a Folder</button>
+        </form>
+        <form>
+            <div class="input-group">
+                    <input type="text" placeholder="Enter Folder Name" class="form-control" ng-model="folderName" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2" ng-click="addAFolder(folderName)">Add a Folder</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
