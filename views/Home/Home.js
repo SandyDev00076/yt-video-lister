@@ -33,4 +33,15 @@ module.exports = function($scope) {
         $scope.currPath = ($scope.currentFolder === '') ? name : `${$scope.currPath} / ${name}`;
         $scope.currentFolder = name;
     }
+
+    $scope.goBack = () => {
+        $scope.currentFolder = $scope.folderList.find(folder => folder.name === $scope.currentFolder).parent;
+        let paths = $scope.currPath.split(' / ');
+        paths.pop();
+        if (paths.length === 0) {
+            $scope.currPath = 'Choose a Folder';
+        } else {
+            $scope.currPath = paths.join(' / ');
+        }
+    }
 }

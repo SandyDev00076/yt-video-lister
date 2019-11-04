@@ -12,7 +12,8 @@
         </div>
     </div>
     <div ng-if="videoList.length !== 0 || folderList.length !== 0" class="currpath">
-        <span>{{currPath}}</span>
+        <i class="material-icons" style="float: left; cursor: pointer; padding: 1em;" ng-click="goBack()">chevron_left</i>
+        <span style="float: left;">{{currPath}}</span>
     </div>
     <div ng-if="videoList.length !== 0 || folderList.length !== 0" class="videos">
         <div class="folder" ng-repeat="folder in folderList" ng-if="folder.parent === currentFolder" ng-click="openAFolder(folder.name)">

@@ -1,5 +1,6 @@
 .homecontainer {
     text-align: center;
+    padding: 0.5em;
 }
 
 .protitle {
@@ -38,6 +39,7 @@
     display: flex;
     flex-wrap: wrap;
     margin: 2em;
+    margin-top: 0.5em;
     height: 50vh;
     overflow-y: auto;
 }
@@ -62,5 +64,10 @@
     padding: 10px;
     color: grey;
     font-size: 1.2em;
-    float: inline-end;
+    margin: 1em;
+    padding: 1em;
+    font-weight: bold;
+
+    display: flex;
+    align-items: center;
 }
