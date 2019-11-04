@@ -25,9 +25,11 @@ module.exports = function($scope) {
             if (checkAndAddThumbnail(link)) {
                 $scope.videoUrl = '';
                 $scope.videoName = '';
+                $scope.videoTN = '';
                 $scope.videoList.push({
                     link,
                     name,
+                    thumbnail: $scope.videoTN,
                     owner: $scope.currentFolder
                 });
             }

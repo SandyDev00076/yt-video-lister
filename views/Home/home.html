@@ -22,7 +22,7 @@
             {{ folder.name }}
         </div>
         <div class="video" ng-repeat="vid in videoList" ng-if="vid.owner === currentFolder">
-            <img src="{{ videoTN }}" style="height: 60%;"></img>
+            <img src="{{ vid.thumbnail }}" style="height: 60%;"></img>
             <hr>
             {{ vid.name }}
         </div>
