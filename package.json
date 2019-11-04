@@ -12,7 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.7.8",
-    "angular-route": "^1.7.8"
+    "angular-route": "^1.7.8",
+    "youtube-thumbnail": "^1.3.0"
   },
   "devDependencies": {
     "browserify-css": "^0.15.0"

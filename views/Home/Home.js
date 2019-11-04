@@ -1,8 +1,11 @@
+const youtubeThumbnail = require('youtube-thumbnail');
+
 module.exports = function($scope) {
     $scope.videoList = [];
     $scope.folderList = [];
     $scope.currentFolder = '';
     $scope.videoUrl = '';
+    $scope.videoTN = '';
     $scope.videoName = '';
     $scope.folderName = '';
     $scope.currPath = 'Choose a Folder';
@@ -19,13 +22,15 @@ module.exports = function($scope) {
 
     $scope.addAVideo = (link, name) => {
         if (link && name) {
-            $scope.videoUrl = '';
-            $scope.videoName = '';
-            $scope.videoList.push({
-                link,
-                name,
-                owner: $scope.currentFolder
-            });
+            if (checkAndAddThumbnail(link)) {
+                $scope.videoUrl = '';
+                $scope.videoName = '';
+                $scope.videoList.push({
+                    link,
+                    name,
+                    owner: $scope.currentFolder
+                });
+            }
         }
     }
 
@@ -42,6 +47,18 @@ module.exports = function($scope) {
             $scope.currPath = 'Choose a Folder';
         } else {
             $scope.currPath = paths.join(' / ');
+        }
+    }
+
+    checkAndAddThumbnail = (link) => {
+        let thumbnailUrl = '';
+        try {
+            thumbnailUrl = youtubeThumbnail(link);
+            $scope.videoTN = thumbnailUrl.default.url;
+            return true;
+        } catch(err) {
+            console.log(err);
+            return false;
         }
     }
 }

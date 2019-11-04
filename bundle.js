@@ -22,7 +22,7 @@ app.controller('home', require('./views/Home/Home'));
 app.controller('video', require('./views/Video/Video'));
 
 // services
-},{"./views/Home/Home":6,"./views/Video/Video":7,"angular":5,"angular-route":3}],2:[function(require,module,exports){
+},{"./views/Home/Home":8,"./views/Video/Video":9,"angular":5,"angular-route":3}],2:[function(require,module,exports){
 /**
  * @license AngularJS v1.7.8
  * (c) 2010-2018 Google, Inc. http://angularjs.org
@@ -37735,11 +37735,92 @@ require('./angular');
 module.exports = angular;
 
 },{"./angular":4}],6:[function(require,module,exports){
+
+(function (root, factory) {
+  if (typeof exports === 'object') {
+    module.exports = factory();
+  } else if (typeof define === 'function' && define.amd) {
+    define(factory);
+  } else {
+    root.getYouTubeID = factory();
+  }
+}(this, function (exports) {
+
+  return function (url) {
+    if (/youtu\.?be/.test(url)) {
+
+      // Look first for known patterns
+      var i;
+      var patterns = [
+        /youtu\.be\/([^#\&\?]{11})/,  // youtu.be/<id>
+        /\?v=([^#\&\?]{11})/,         // ?v=<id>
+        /\&v=([^#\&\?]{11})/,         // &v=<id>
+        /embed\/([^#\&\?]{11})/,      // embed/<id>
+        /\/v\/([^#\&\?]{11})/         // /v/<id>
+      ];
+
+      // If any pattern matches, return the ID
+      for (i = 0; i < patterns.length; ++i) {
+        if (patterns[i].test(url)) {
+          return patterns[i].exec(url)[1];
+        }
+      }
+
+      // If that fails, break it apart by certain characters and look 
+      // for the 11 character key
+      var tokens = url.split(/[\/\&\?=#\.\s]/g);
+      for (i = 0; i < tokens.length; ++i) {
+        if (/^[^#\&\?]{11}$/.test(tokens[i])) {
+          return tokens[i];
+        }
+      }
+    }
+
+    return null;
+  };
+
+}));
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
+var getYouTubeID = require('get-youtube-id');
+
+module.exports = function(url){
+  var id = getYouTubeID(url);
+
+  if(!id && url.length === 11){
+    id = url
+  }
+
+  return {
+    'default': {
+      url: 'http://img.youtube.com/vi/' + id + '/default.jpg',
+      width: 120,
+      height: 90
+    },
+    medium: {
+      url: 'http://img.youtube.com/vi/' + id + '/mqdefault.jpg',
+      width: 320,
+      height: 180
+    },
+    high: {
+      url: 'http://img.youtube.com/vi/' + id + '/hqdefault.jpg',
+      width: 480,
+      height: 360
+    },
+  }
+};
+
+},{"get-youtube-id":6}],8:[function(require,module,exports){
+const youtubeThumbnail = require('youtube-thumbnail');
+
 module.exports = function($scope) {
     $scope.videoList = [];
     $scope.folderList = [];
     $scope.currentFolder = '';
     $scope.videoUrl = '';
+    $scope.videoTN = '';
     $scope.videoName = '';
     $scope.folderName = '';
     $scope.currPath = 'Choose a Folder';
@@ -37756,13 +37837,15 @@ module.exports = function($scope) {
 
     $scope.addAVideo = (link, name) => {
         if (link && name) {
-            $scope.videoUrl = '';
-            $scope.videoName = '';
-            $scope.videoList.push({
-                link,
-                name,
-                owner: $scope.currentFolder
-            });
+            if (checkAndAddThumbnail(link)) {
+                $scope.videoUrl = '';
+                $scope.videoName = '';
+                $scope.videoList.push({
+                    link,
+                    name,
+                    owner: $scope.currentFolder
+                });
+            }
         }
     }
 
@@ -37781,8 +37864,20 @@ module.exports = function($scope) {
             $scope.currPath = paths.join(' / ');
         }
     }
+
+    checkAndAddThumbnail = (link) => {
+        let thumbnailUrl = '';
+        try {
+            thumbnailUrl = youtubeThumbnail(link);
+            $scope.videoTN = thumbnailUrl.default.url;
+            return true;
+        } catch(err) {
+            console.log(err);
+            return false;
+        }
+    }
 }
-},{}],7:[function(require,module,exports){
+},{"youtube-thumbnail":7}],9:[function(require,module,exports){
 module.exports = function($scope) {
     console.log('video controller');
 }
