@@ -67,7 +67,8 @@ app.delete('/:id/folders/:folderid', (req, res) => {
     User.findById(req.params.id, (err, doc) => {
         if (!err) {
             let newFolders = doc.folderList;
-            newFolders.splice(newFolders.findIndex(folder => folder._id === toDelete), 1);
+            const indexToDelete = newFolders.findIndex(folder => folder._id == toDelete);
+            newFolders.splice(indexToDelete, 1);
             User.findByIdAndUpdate(req.params.id, { folderList: newFolders }, { new: true }, (err, doc) => {
                 if (!err) {
                     res.send(doc.folderList);
