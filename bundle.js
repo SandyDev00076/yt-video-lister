@@ -37821,7 +37821,7 @@ module.exports = function(url){
 const youtubeThumbnail = require('youtube-thumbnail');
 const baseUrl = require('../config').baseUrl;
 
-module.exports = function($scope, $http, $rootScope) {
+module.exports = function($scope, $http, $rootScope, $routeParams) {
     $scope.videoList = [];
     $scope.folderList = [];
     $scope.currentFolder = '';
@@ -37831,18 +37831,18 @@ module.exports = function($scope, $http, $rootScope) {
     $scope.folderName = '';
     $scope.currPath = 'Choose a Folder';
 
-    $http.get(`${baseUrl}${$rootScope.userid}/folders`).then(res => {
+    $http.get(`${baseUrl}${$routeParams.id}/folders`).then(res => {
         $scope.folderList = res.data;
     });
 
-    $http.get(`${baseUrl}${$rootScope.userid}/videos`).then(res => {
+    $http.get(`${baseUrl}${$routeParams.id}/videos`).then(res => {
         $scope.videoList = res.data;
     });
 
     $scope.addAFolder = (name) => {
         if (name && checkFolderName(name)) {
             $scope.folderName = '';
-            $http.post(`${baseUrl}${$rootScope.userid}/folders`, { folder: {
+            $http.post(`${baseUrl}${$routeParams.id}/folders`, { folder: {
                 name,
                 parent: $scope.currentFolder
             } }).then(res => {
@@ -37860,7 +37860,7 @@ module.exports = function($scope, $http, $rootScope) {
             if (checkAndAddThumbnail(link)) {
                 $scope.videoUrl = '';
                 $scope.videoName = '';
-                $http.post(`${baseUrl}${$rootScope.userid}/videos`, { video: {
+                $http.post(`${baseUrl}${$routeParams.id}/videos`, { video: {
                     link,
                     name,
                     thumbnail: $scope.videoTN,
@@ -37903,7 +37903,7 @@ module.exports = function($scope, $http, $rootScope) {
 
     $scope.deleteFolder = (id, event) => {
         if (event) event.stopPropagation();
-        $http.delete(`${baseUrl}${$rootScope.userid}/folders/${id}`).then(res => {
+        $http.delete(`${baseUrl}${$routeParams.id}/folders/${id}`).then(res => {
             $scope.folderList = res.data;
         });
         // $scope.folderList.splice($scope.folderList.findIndex(folder => folder.name === name), 1);
@@ -37911,7 +37911,7 @@ module.exports = function($scope, $http, $rootScope) {
 
     $scope.deleteVideo = (id, event) => {
         if (event) event.stopPropagation();
-        $http.delete(`${baseUrl}${$rootScope.userid}/videos/${id}`).then(res => {
+        $http.delete(`${baseUrl}${$routeParams.id}/videos/${id}`).then(res => {
             $scope.videoList = res.data;
         });
         // $scope.videoList.splice($scope.videoList.findIndex(vid => vid.name === name), 1);
