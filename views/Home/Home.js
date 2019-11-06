@@ -81,14 +81,16 @@ module.exports = function($scope, $http, $rootScope) {
         }
     }
 
-    $scope.deleteFolder = (id) => {
+    $scope.deleteFolder = (id, event) => {
+        if (event) event.stopPropagation();
         $http.delete(`${baseUrl}${$rootScope.userid}/folders/${id}`).then(res => {
             $scope.folderList = res.data;
         });
         // $scope.folderList.splice($scope.folderList.findIndex(folder => folder.name === name), 1);
     }
 
-    $scope.deleteVideo = (id) => {
+    $scope.deleteVideo = (id, event) => {
+        if (event) event.stopPropagation();
         $http.delete(`${baseUrl}${$rootScope.userid}/videos/${id}`).then(res => {
             $scope.videoList = res.data;
         });

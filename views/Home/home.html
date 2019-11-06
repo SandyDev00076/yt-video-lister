@@ -20,7 +20,7 @@
             <i class="material-icons" style="font-size: 3em; height: 60%;">folder</i>
             <hr>
             {{ folder.name }}
-            <div class="taskpanel" ng-click="deleteFolder(folder._id)">
+            <div class="taskpanel" ng-click="deleteFolder(folder._id, $event)">
                 <i class="material-icons">delete</i>
             </div>
         </div>
@@ -28,7 +28,7 @@
             <img src="{{ vid.thumbnail }}" style="height: 60%;"></img>
             <hr>
             {{ vid.name }}
-            <div class="taskpanel" ng-click="deleteVideo(vid._id)">
+            <div class="taskpanel" ng-click="deleteVideo(vid._id, $event)">
                 <i class="material-icons">delete</i>
             </div>
         </div>
