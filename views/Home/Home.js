@@ -1,6 +1,7 @@
 const youtubeThumbnail = require('youtube-thumbnail');
+const baseUrl = require('../config').baseUrl;
 
-module.exports = function($scope) {
+module.exports = function($scope, $http, $rootScope) {
     $scope.videoList = [];
     $scope.folderList = [];
     $scope.currentFolder = '';
@@ -10,13 +11,27 @@ module.exports = function($scope) {
     $scope.folderName = '';
     $scope.currPath = 'Choose a Folder';
 
+    $http.get(`${baseUrl}${$rootScope.userid}/folders`).then(res => {
+        $scope.folderList = res.data;
+    });
+
+    $http.get(`${baseUrl}${$rootScope.userid}/videos`).then(res => {
+        $scope.videoList = res.data;
+    });
+
     $scope.addAFolder = (name) => {
         if (name && checkFolderName(name)) {
             $scope.folderName = '';
-            $scope.folderList.push({
+            $http.post(`${baseUrl}${$rootScope.userid}/folders`, { folder: {
                 name,
                 parent: $scope.currentFolder
+            } }).then(res => {
+                $scope.folderList = res.data;
             });
+            // $scope.folderList.push({
+            //     name,
+            //     parent: $scope.currentFolder
+            // });
         }
     }
 
@@ -25,12 +40,20 @@ module.exports = function($scope) {
             if (checkAndAddThumbnail(link)) {
                 $scope.videoUrl = '';
                 $scope.videoName = '';
-                $scope.videoList.push({
+                $http.post(`${baseUrl}${$rootScope.userid}/videos`, { video: {
                     link,
                     name,
                     thumbnail: $scope.videoTN,
                     owner: $scope.currentFolder
+                } }).then(res => {
+                    $scope.videoList = res.data;
                 });
+                // $scope.videoList.push({
+                //     link,
+                //     name,
+                //     thumbnail: $scope.videoTN,
+                //     owner: $scope.currentFolder
+                // });
                 $scope.videoTN = '';
             }
         }
@@ -46,22 +69,30 @@ module.exports = function($scope) {
     }
 
     $scope.goBack = () => {
-        $scope.currentFolder = $scope.folderList.find(folder => folder.name === $scope.currentFolder).parent;
-        let paths = $scope.currPath.split(' / ');
-        paths.pop();
-        if (paths.length === 0) {
-            $scope.currPath = 'Choose a Folder';
-        } else {
-            $scope.currPath = paths.join(' / ');
+        if ($scope.currentFolder !== '') {
+            $scope.currentFolder = $scope.folderList.find(folder => folder.name === $scope.currentFolder).parent;
+            let paths = $scope.currPath.split(' / ');
+            paths.pop();
+            if (paths.length === 0) {
+                $scope.currPath = 'Choose a Folder';
+            } else {
+                $scope.currPath = paths.join(' / ');
+            }
         }
     }
 
-    $scope.deleteFolder = (name) => {
-        $scope.folderList.splice($scope.folderList.findIndex(folder => folder.name === name), 1);
+    $scope.deleteFolder = (id) => {
+        $http.delete(`${baseUrl}${$rootScope.userid}/folders/${id}`).then(res => {
+            $scope.folderList = res.data;
+        });
+        // $scope.folderList.splice($scope.folderList.findIndex(folder => folder.name === name), 1);
     }
 
-    $scope.deleteVideo = (name) => {
-        $scope.videoList.splice($scope.videoList.findIndex(vid => vid.name === name), 1);
+    $scope.deleteVideo = (id) => {
+        $http.delete(`${baseUrl}${$rootScope.userid}/videos/${id}`).then(res => {
+            $scope.videoList = res.data;
+        });
+        // $scope.videoList.splice($scope.videoList.findIndex(vid => vid.name === name), 1);
     }
 
     checkAndAddThumbnail = (link) => {

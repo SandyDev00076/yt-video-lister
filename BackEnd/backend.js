@@ -26,6 +26,17 @@ const Folder = require('./models/Folder').model;
 const Video = require('./models/Video').model;
 const User = require('./models/User');
 
+
+app.post('/users', (req, res) => {
+    User.findOne({ uid: req.body.uid }, (err, doc) => {
+        if (!err) {
+            if (doc) res.send(true);
+            else res.send(false);
+        } else res.send(false);
+    });
+});
+
+// get all the folders of the user
 app.get('/:id/folders', (req, res) => {
     User.findById(req.params.id, (err, doc) => {
         if (!err) {
@@ -34,6 +45,7 @@ app.get('/:id/folders', (req, res) => {
     });
 });
 
+// add a folder
 app.post('/:id/folders', (req, res) => {
     const newFolder = req.body.folder;
     User.findById(req.params.id, (err, doc) => {
@@ -49,6 +61,23 @@ app.post('/:id/folders', (req, res) => {
     });
 });
 
+// delete a folder
+app.delete('/:id/folders/:folderid', (req, res) => {
+    const toDelete = req.params.folderid;
+    User.findById(req.params.id, (err, doc) => {
+        if (!err) {
+            let newFolders = doc.folderList;
+            newFolders.splice(newFolders.findIndex(folder => folder._id === toDelete), 1);
+            User.findByIdAndUpdate(req.params.id, { folderList: newFolders }, { new: true }, (err, doc) => {
+                if (!err) {
+                    res.send(doc.folderList);
+                } else console.error(err);
+            });
+        } else console.error(err);
+    });
+});
+
+// get all the videos of the user
 app.get('/:id/videos', (req, res) => {
     User.findById(req.params.id, (err, doc) => {
         if (!err) {
@@ -57,12 +86,29 @@ app.get('/:id/videos', (req, res) => {
     });
 });
 
+// add a video
 app.post('/:id/videos', (req, res) => {
     const newVideo = req.body.video;
     User.findById(req.params.id, (err, doc) => {
         if (!err) {
             let newVideos = doc.videoList;
             newVideos.push(newVideo);
+            User.findByIdAndUpdate(req.params.id, { videoList: newVideos }, { new: true },(err, doc) => {
+                if (!err) {
+                    res.send(doc.videoList);
+                } else console.error(err);
+            });
+        } else console.error(err);
+    });
+});
+
+// delete a video
+app.delete('/:id/videos/:vidid', (req, res) => {
+    const toDelete = req.params.vidid;
+    User.findById(req.params.id, (err, doc) => {
+        if (!err) {
+            let newVideos = doc.videoList;
+            newVideos.splice(newVideos.findIndex(video => video._id === toDelete), 1);
             User.findByIdAndUpdate(req.params.id, { videoList: newVideos }, { new: true },(err, doc) => {
                 if (!err) {
                     res.send(doc.videoList);

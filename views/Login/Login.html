@@ -1,0 +1,25 @@
+<div class="logincontainer">
+    <div class="loginpane">
+        <form>
+            <div class="input-group mb-3">
+                <input type="text" placeholder="Enter your Username" ng-model="userid" class="form-control" aria-describedby="button-addon1">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-info" id="button-addon1" ng-click="signIn()">Login</button>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <b>OR</b>
+        <br>
+        <br>
+        <form>
+            <div class="input-group mb-3">
+                <input type="text" placeholder="Create One" ng-model="username" class="form-control" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary" id="button-addon2" ng-click="checkUsername()" ng-if="!validUsername">Check Username</button>
+                    <button type="submit" class="btn btn-success" id="button-addon2" ng-if="validUsername" ng-click="startSession()">Continue</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

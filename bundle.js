@@ -6,6 +6,10 @@ const app = angular.module('myapp', ['ngRoute']);
 app.config($routeProvider => {
     $routeProvider
         .when('/', {
+            templateUrl: 'views/Login/Login.html',
+            controller: 'login'
+        })
+        .when('/home/:id', {
             templateUrl: 'views/Home/home.html',
             controller: 'home'
         })
@@ -18,11 +22,12 @@ app.config($routeProvider => {
         });
 })
 // controllers
+app.controller('login', require('./views/Login/Login'));
 app.controller('home', require('./views/Home/Home'));
 app.controller('video', require('./views/Video/Video'));
 
 // services
-},{"./views/Home/Home":8,"./views/Video/Video":9,"angular":5,"angular-route":3}],2:[function(require,module,exports){
+},{"./views/Home/Home":8,"./views/Login/Login":9,"./views/Video/Video":10,"angular":5,"angular-route":3}],2:[function(require,module,exports){
 /**
  * @license AngularJS v1.7.8
  * (c) 2010-2018 Google, Inc. http://angularjs.org
@@ -37814,8 +37819,9 @@ module.exports = function(url){
 
 },{"get-youtube-id":6}],8:[function(require,module,exports){
 const youtubeThumbnail = require('youtube-thumbnail');
+const baseUrl = require('../config').baseUrl;
 
-module.exports = function($scope) {
+module.exports = function($scope, $http, $rootScope) {
     $scope.videoList = [];
     $scope.folderList = [];
     $scope.currentFolder = '';
@@ -37825,13 +37831,27 @@ module.exports = function($scope) {
     $scope.folderName = '';
     $scope.currPath = 'Choose a Folder';
 
+    $http.get(`${baseUrl}${$rootScope.userid}/folders`).then(res => {
+        $scope.folderList = res.data;
+    });
+
+    $http.get(`${baseUrl}${$rootScope.userid}/videos`).then(res => {
+        $scope.videoList = res.data;
+    });
+
     $scope.addAFolder = (name) => {
         if (name && checkFolderName(name)) {
             $scope.folderName = '';
-            $scope.folderList.push({
+            $http.post(`${baseUrl}${$rootScope.userid}/folders`, { folder: {
                 name,
                 parent: $scope.currentFolder
+            } }).then(res => {
+                $scope.folderList = res.data;
             });
+            // $scope.folderList.push({
+            //     name,
+            //     parent: $scope.currentFolder
+            // });
         }
     }
 
@@ -37840,12 +37860,20 @@ module.exports = function($scope) {
             if (checkAndAddThumbnail(link)) {
                 $scope.videoUrl = '';
                 $scope.videoName = '';
-                $scope.videoList.push({
+                $http.post(`${baseUrl}${$rootScope.userid}/videos`, { video: {
                     link,
                     name,
                     thumbnail: $scope.videoTN,
                     owner: $scope.currentFolder
+                } }).then(res => {
+                    $scope.videoList = res.data;
                 });
+                // $scope.videoList.push({
+                //     link,
+                //     name,
+                //     thumbnail: $scope.videoTN,
+                //     owner: $scope.currentFolder
+                // });
                 $scope.videoTN = '';
             }
         }
@@ -37861,22 +37889,30 @@ module.exports = function($scope) {
     }
 
     $scope.goBack = () => {
-        $scope.currentFolder = $scope.folderList.find(folder => folder.name === $scope.currentFolder).parent;
-        let paths = $scope.currPath.split(' / ');
-        paths.pop();
-        if (paths.length === 0) {
-            $scope.currPath = 'Choose a Folder';
-        } else {
-            $scope.currPath = paths.join(' / ');
+        if ($scope.currentFolder !== '') {
+            $scope.currentFolder = $scope.folderList.find(folder => folder.name === $scope.currentFolder).parent;
+            let paths = $scope.currPath.split(' / ');
+            paths.pop();
+            if (paths.length === 0) {
+                $scope.currPath = 'Choose a Folder';
+            } else {
+                $scope.currPath = paths.join(' / ');
+            }
         }
     }
 
-    $scope.deleteFolder = (name) => {
-        $scope.folderList.splice($scope.folderList.findIndex(folder => folder.name === name), 1);
+    $scope.deleteFolder = (id) => {
+        $http.delete(`${baseUrl}${$rootScope.userid}/folders/${id}`).then(res => {
+            $scope.folderList = res.data;
+        });
+        // $scope.folderList.splice($scope.folderList.findIndex(folder => folder.name === name), 1);
     }
 
-    $scope.deleteVideo = (name) => {
-        $scope.videoList.splice($scope.videoList.findIndex(vid => vid.name === name), 1);
+    $scope.deleteVideo = (id) => {
+        $http.delete(`${baseUrl}${$rootScope.userid}/videos/${id}`).then(res => {
+            $scope.videoList = res.data;
+        });
+        // $scope.videoList.splice($scope.videoList.findIndex(vid => vid.name === name), 1);
     }
 
     checkAndAddThumbnail = (link) => {
@@ -37899,8 +37935,47 @@ module.exports = function($scope) {
         return $scope.videoList.findIndex(video => video.name === name) < 0;
     }
 }
-},{"youtube-thumbnail":7}],9:[function(require,module,exports){
+},{"../config":11,"youtube-thumbnail":7}],9:[function(require,module,exports){
+const baseUrl = require('../config').baseUrl;
+module.exports = function($scope, $http, $rootScope, $window) {
+    $scope.validUsername = false;
+    $scope.username = '';
+    $scope.userid = '';
+    $scope.checkUsername = () => {
+        $http.post(`${baseUrl}users`, { uid: $scope.username }).then(res => {
+            console.log(res.data);
+            if(res.data) {
+                console.log('It exists');
+                $scope.validUsername = false;
+            } else {
+                console.log('It doesnt');
+                $scope.validUsername = true;
+            }
+        });
+    }
+    $scope.startSession = () => {
+        $http.post(`${baseUrl}user`, { uid: $scope.username }).then(res => {
+            $rootScope.userid = res.data;
+            $window.location.href = `/index.html#!/home/${$rootScope.userid}`;
+        });
+    }
+    $scope.signIn = () => {
+        if ($scope.userid) {
+            $http.get(`${baseUrl}uid/${$scope.userid}`).then(res => {
+                if (res.data) {
+                    $rootScope.userid = res.data.id;
+                    $window.location.href = `/index.html#!/home/${$rootScope.userid}`;
+                }
+            });
+        }
+    }
+}
+},{"../config":11}],10:[function(require,module,exports){
 module.exports = function($scope) {
     console.log('video controller');
+}
+},{}],11:[function(require,module,exports){
+module.exports = {
+    baseUrl: 'http://localhost:2300/'
 }
 },{}]},{},[1]);
