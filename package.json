@@ -11,7 +11,7 @@
   "author": "Sanjeet Tiwari",
   "license": "ISC",
   "dependencies": {
-    "angular": "^1.7.8",
+    "angular": "^1.8.3",
     "angular-route": "^1.7.8",
     "youtube-thumbnail": "^1.3.0"
   },
